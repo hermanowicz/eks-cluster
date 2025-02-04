@@ -2,4 +2,7 @@
 .tf*
 *.bin
 Makefile
-
+.idea
+*.crt
+*.key
+*.env

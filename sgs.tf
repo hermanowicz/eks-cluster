@@ -1,5 +1,5 @@
 resource "aws_security_group" "bastion-sg" {
-  vpc_id      = module.vpc.default_vpc_id
+  vpc_id      = module.vpc.vpc_id
   description = "Security group for bastion server accessed via. ssm session."
 
   tags = {
@@ -11,7 +11,7 @@ resource "aws_security_group" "bastion-sg" {
 
 
 resource "aws_security_group" "eks-workers-sg" {
-  vpc_id      = module.vpc.default_vpc_id
+  vpc_id      = module.vpc.vpc_id
   description = "Security group for eks worker nodes in all subnets"
 
   tags = {
@@ -22,7 +22,7 @@ resource "aws_security_group" "eks-workers-sg" {
 }
 
 resource "aws_security_group" "eks-master-sg" {
-  vpc_id      = module.vpc.default_vpc_id
+  vpc_id      = module.vpc.vpc_id
   description = "Security group for masters/control plane of eks"
 
   tags = {
@@ -33,7 +33,7 @@ resource "aws_security_group" "eks-master-sg" {
 }
 
 resource "aws_security_group" "rds-proxy-sg" {
-  vpc_id      = module.vpc.default_vpc_id
+  vpc_id      = module.vpc.vpc_id
   description = "Security group for rds proxy in front of Aurora"
 
   tags = {
@@ -44,11 +44,22 @@ resource "aws_security_group" "rds-proxy-sg" {
 }
 
 resource "aws_security_group" "fsx-sg" {
-  vpc_id      = module.vpc.default_vpc_id
+  vpc_id      = module.vpc.vpc_id
   description = "Security group for fsx openzfs file system "
 
   tags = {
     Name : "fsx-sg"
+    Terraform : true
+    Version : "0.1.0"
+  }
+}
+
+resource "aws_security_group" "ssm-endpoints-sg" {
+  vpc_id      = module.vpc.vpc_id
+  description = "Security group for ssm access endpoints"
+
+  tags = {
+    Name : "ssm-endpoints-sg"
     Terraform : true
     Version : "0.1.0"
   }
