@@ -33,7 +33,7 @@ resource "aws_security_group" "eks-master-sg" {
 }
 
 resource "aws_security_group" "rds-proxy-sg" {
-  vpc_id = module.vpc.default_vpc_id
+  vpc_id      = module.vpc.default_vpc_id
   description = "Security group for rds proxy in front of Aurora"
 
   tags = {
@@ -44,7 +44,7 @@ resource "aws_security_group" "rds-proxy-sg" {
 }
 
 resource "aws_security_group" "fsx-sg" {
-  vpc_id = module.vpc.default_vpc_id
+  vpc_id      = module.vpc.default_vpc_id
   description = "Security group for fsx openzfs file system "
 
   tags = {
