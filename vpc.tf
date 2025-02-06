@@ -4,12 +4,12 @@ module "vpc" {
   name = "eks-base-vpc"
   cidr = "10.0.0.0/16"
 
-  azs                  = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  azs                  = ["${var.region}a", "${var.region}b", "${var.region}c"]
   database_subnets     = ["10.0.3.0/24", "10.0.6.0/24", "10.0.9.0/24"]
   private_subnets      = ["10.0.12.0/22", "10.0.16.0/22", "10.0.20.0/22"]
-  private_subnet_names = ["eks-west-1a", "eks-west-1b", "eks-west-1c"]
+  private_subnet_names = ["eks-workers-a", "eks-workers-b", "eks-workers-c"]
   intra_subnets        = ["10.0.33.0/24", "10.0.36.0/24", "10.0.39.0/24"]
-  intra_subnet_names   = ["cache-west-1a", "cache-west-1b", "cache-west-1c"]
+  intra_subnet_names   = ["cache-a", "cache-b", "cache-c"]
   public_subnets       = ["10.0.203.0/24", "10.0.206.0/24", "10.0.209.0/24"]
 
   enable_nat_gateway     = true
