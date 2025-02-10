@@ -1,5 +1,6 @@
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.18.1"
 
   name = "eks-base-vpc"
   cidr = "10.0.0.0/16"

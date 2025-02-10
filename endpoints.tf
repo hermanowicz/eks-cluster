@@ -15,10 +15,9 @@ resource "aws_vpc_endpoint" "s3" {
 # ---------------------------------------
 
 resource "aws_vpc_endpoint" "ec2-messages-vpc-endpoint" {
-  vpc_id            = module.vpc.vpc_id
-  service_name      = "ec2messages.${var.region}.amazonaws.com"
-  vpc_endpoint_type = "Interface"
-
+  vpc_id             = module.vpc.vpc_id
+  service_name       = "ec2messages.${var.region}.amazonaws.com"
+  vpc_endpoint_type  = "Interface"
   security_group_ids = [aws_security_group.ssm-endpoints-sg.id]
   subnet_ids         = flatten(module.vpc.private_subnets[*])
 
@@ -38,6 +37,7 @@ resource "aws_vpc_endpoint" "ssm-vpc-endpoint" {
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.ssm-endpoints-sg.id]
   subnet_ids          = flatten(module.vpc.private_subnets[*])
+  service_name        = "" // todo: add service name
   private_dns_enabled = true
 
   tags = {
@@ -49,10 +49,12 @@ resource "aws_vpc_endpoint" "ssm-vpc-endpoint" {
 }
 
 resource "aws_vpc_endpoint" "ssm-messages-vpc-endpoint" {
-  vpc_id              = module.vpc.vpc_id
+  vpc_id = module.vpc.vpc_id
+
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.ssm-endpoints-sg.id]
   subnet_ids          = flatten(module.vpc.private_subnets[*])
+  service_name        = ""
   private_dns_enabled = true
 
   tags = {
@@ -68,6 +70,7 @@ resource "aws_vpc_endpoint" "kms-service-vpc-endpoint" {
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.ssm-endpoints-sg.id]
   subnet_ids          = flatten(module.vpc.private_subnets[*])
+  service_name        = ""
   private_dns_enabled = true
 
   tags = {
@@ -83,6 +86,7 @@ resource "aws_vpc_endpoint" "logs-vpc-endpoint" {
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.ssm-endpoints-sg.id]
   subnet_ids          = flatten(module.vpc.private_subnets[*])
+  service_name        = ""
   private_dns_enabled = true
 
   tags = {
