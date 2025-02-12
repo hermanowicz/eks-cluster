@@ -35,6 +35,15 @@ resource "aws_security_group_rule" "eks-workers-proxy-ingress" {
   cidr_blocks       = [module.vpc.vpc_cidr_block]
 }
 
+resource "aws_security_group_rule" "eks-worker-egress" {
+  security_group_id = aws_security_group.eks-workers-sg.id
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = [module.vpc.vpc_cidr_block]
+}
+
 resource "aws_security_group_rule" "eks-control-api-ingress" {
   security_group_id = aws_security_group.eks-master-sg.id
   type              = "ingress"
@@ -95,5 +104,14 @@ resource "aws_security_group_rule" "eks-control-manager-ingress" {
   from_port         = 10257
   to_port           = 10257
   protocol          = "tcp"
+  cidr_blocks       = [module.vpc.vpc_cidr_block]
+}
+
+resource "aws_security_group_rule" "eks-control-egress" {
+  security_group_id = aws_security_group.eks-master-sg.id
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
   cidr_blocks       = [module.vpc.vpc_cidr_block]
 }

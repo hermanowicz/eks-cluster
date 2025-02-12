@@ -3,9 +3,9 @@
 - add security groups rulles -> in progress
 - add rds-proxy -> in progress
 - add fsx filesystem and volume
--
+- testing ...
 
-## motes
+## notes
 
 > how to get current versions of aurora postgres in region
 
