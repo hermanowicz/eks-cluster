@@ -4,7 +4,7 @@ module "cluster" {
 
   name                = "tetris-with-vectors"
   engine              = "aurora-postgresql"
-  engine_version      = "14.5"
+  engine_version      = "16.4"
   engine_mode         = "provisioned"
   storage_encrypted   = true
   apply_immediately   = true
@@ -30,9 +30,9 @@ module "cluster" {
     vpc_ingress = {
       cidr_blocks = module.vpc.private_subnets_cidr_blocks
     }
-    #   ex1_ingress = {
-    #     cidr_blocks = ["10.20.0.0/20"]
-    #   }
+    # ex1_ingress = {
+    #   cidr_blocks = ["10.20.0.0/20"]
+    # }
   }
 
   enabled_cloudwatch_logs_exports = ["tetris-db-with-vectors"]
