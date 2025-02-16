@@ -1,6 +1,6 @@
 resource "aws_vpc_endpoint" "s3" {
   vpc_id          = module.vpc.vpc_id
-  service_name    = "s3.${var.region}.amazonaws.com"
+  service_name    = "com.amazonaws.${var.region}.s3"
   route_table_ids = flatten(module.vpc.private_route_table_ids[*])
 
   tags = {
@@ -15,21 +15,19 @@ resource "aws_vpc_endpoint" "s3" {
 # ---------------------------------------
 
 resource "aws_vpc_endpoint" "ec2-messages-vpc-endpoint" {
-  vpc_id             = module.vpc.vpc_id
-  service_name       = "ec2messages.${var.region}.amazonaws.com"
-  vpc_endpoint_type  = "Interface"
-  security_group_ids = [aws_security_group.ssm-endpoints-sg.id]
-  subnet_ids         = flatten(module.vpc.private_subnets[*])
-
+  vpc_id              = module.vpc.vpc_id
+  service_name        = "com.amazonaws.${var.region}.ec2messages"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.ssm-endpoints-sg.id]
+  subnet_ids          = flatten(module.vpc.private_subnets[*])
   private_dns_enabled = true
 
   tags = {
-    Name : "ec2-messages-vpc-endpoint"
-    Terraform : true
-    Version : "0.1.0"
-    Envrionment : "sandbox"
+    Name        = "ec2-messages-vpc-endpoint"
+    Terraform   = true
+    Version     = "0.1.0"
+    Envrionment = "sandbox"
   }
-
 }
 
 resource "aws_vpc_endpoint" "ssm-vpc-endpoint" {
@@ -37,14 +35,14 @@ resource "aws_vpc_endpoint" "ssm-vpc-endpoint" {
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.ssm-endpoints-sg.id]
   subnet_ids          = flatten(module.vpc.private_subnets[*])
-  service_name        = "ssm.${var.region}.amazonaws.com" // todo: add service name
+  service_name        = "com.amazonaws.${var.region}.ssm"
   private_dns_enabled = true
 
   tags = {
-    Name : "ssm-vpc-endpoint"
-    Terraform : true
-    Version : "0.1.0"
-    Envrionment : "sandbox"
+    Name        = "ssm-vpc-endpoint"
+    Terraform   = true
+    Version     = "0.1.0"
+    Envrionment = "sandbox"
   }
 }
 
@@ -54,14 +52,14 @@ resource "aws_vpc_endpoint" "ssm-messages-vpc-endpoint" {
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.ssm-endpoints-sg.id]
   subnet_ids          = flatten(module.vpc.private_subnets[*])
-  service_name        = "ssmmessages.${var.region}.amazonaws.com"
+  service_name        = "com.amazonaws.${var.region}.ssmmessages"
   private_dns_enabled = true
 
   tags = {
-    Name : "ssm-messages-vpc-endpoint"
-    Terraform : true
-    Version : "0.1.0"
-    Envrionment : "sandbox"
+    Name        = "ssm-messages-vpc-endpoint"
+    Terraform   = true
+    Version     = "0.1.0"
+    Envrionment = "sandbox"
   }
 }
 
@@ -70,14 +68,14 @@ resource "aws_vpc_endpoint" "kms-service-vpc-endpoint" {
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.ssm-endpoints-sg.id]
   subnet_ids          = flatten(module.vpc.private_subnets[*])
-  service_name        = "kms.${var.region}.amazonaws.com"
+  service_name        = "com.amazonaws.${var.region}.kms"
   private_dns_enabled = true
 
   tags = {
-    Name : "kms-service-vpc-endpoint"
-    Terraform : true
-    Version : "0.1.0"
-    Envrionment : "sandbox"
+    Name        = "kms-service-vpc-endpoint"
+    Terraform   = true
+    Version     = "0.1.0"
+    Environment = "sandbox"
   }
 }
 
@@ -86,14 +84,14 @@ resource "aws_vpc_endpoint" "logs-vpc-endpoint" {
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.ssm-endpoints-sg.id]
   subnet_ids          = flatten(module.vpc.private_subnets[*])
-  service_name        = "logs.${var.region}.amazonaws.com"
+  service_name        = "com.amazonaws.${var.region}.logs"
   private_dns_enabled = true
 
   tags = {
-    Name : "logs-vpc-endpoint"
-    Terraform : true
-    Version : "0.1.0"
-    Envrionment : "sandbox"
+    Name        = "logs-vpc-endpoint"
+    Terraform   = true
+    Version     = "0.1.0"
+    Environment = "sandbox"
   }
 }
 
@@ -102,13 +100,26 @@ resource "aws_vpc_endpoint" "eks-ipv4-vpc-endpoint" {
   vpc_endpoint_type   = "Interface"
   security_group_ids  = [aws_security_group.ssm-endpoints-sg.id]
   subnet_ids          = flatten(module.vpc.private_subnets[*])
-  service_name        = "eks-cluster.${var.region}.eks.amazonaws.com"
-  private_dns_enabled = true
+  service_name        = "com.amazonaws.${var.region}.eks"
+  private_dns_enabled = trueś
 
   tags = {
-    Name : "eks-vpc-endpoint"
-    Terraform : true
-    Version : "0.1.0"
-    Envrionment : "sandbox"
+    Name        = "eks-ipv4-vpc-endpoint"
+    Terraform   = true
+    Version     = "0.1.0"
+    Environment = "sandbox"
+  }
+}
+
+
+resource "aws_security_group" "ssm-endpoints-sg" {
+  name   = "ssm-endpoints-sg"
+  vpc_id = module.vpc.vpc_id
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [module.vpc.vpc_cidr_block]
   }
 }

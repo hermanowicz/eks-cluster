@@ -53,14 +53,3 @@ resource "aws_security_group" "fsx-sg" {
     Version : "0.1.0"
   }
 }
-
-resource "aws_security_group" "ssm-endpoints-sg" {
-  vpc_id      = module.vpc.vpc_id
-  description = "Security group for ssm access endpoints"
-
-  tags = {
-    Name : "ssm-endpoints-sg"
-    Terraform : true
-    Version : "0.1.0"
-  }
-}
